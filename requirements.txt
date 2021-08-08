@@ -1,0 +1,2 @@
+discord.py==1.7.3
+google-images-download @ git+https://github.com/Joeclinton1/google-images-download.git@dd0b83d3982aeb444e5ed7f55bf5ed5edc5c99fe
