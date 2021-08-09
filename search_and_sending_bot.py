@@ -6,6 +6,7 @@ import asyncio
 import datetime as dt
 import os
 import time
+import random as rd
 
 bot = commands.Bot(command_prefix = '!')
 
@@ -17,27 +18,26 @@ async def on_ready():
 @bot.command()
 async def 짤(ctx, *context):
     response = google_images_download.googleimagesdownload()
-    j = 0
+    
     wannakeywords = ''
     for i in range(0, len(context)):
         wannakeywords += str(context[i]) + ' '
     
-
-    arguments = {'keywords' : wannakeywords, 'limit' : 1, 'print_urls' : True}
+    wannakeywords = wannakeywords[: -1]
+    arguments = {'keywords' : wannakeywords, 'limit' : 5, 'print_urls' : True}
 
     paths = response.download(arguments)
     
     
     file_path = os.listdir(os.getcwd() + '/downloads/' + wannakeywords)
+    await ctx.send(file = discord.File(os.getcwd() + '/downloads/' + wannakeywords + '/' + file_path[rd.randint(0, 4)]))
     
     for wannafile in file_path:
-        await ctx.send(file = discord.File(os.getcwd() + '/downloads/' + wannakeywords + '/' + wannafile))
+        
         os.remove(os.getcwd() + '/downloads/' + wannakeywords + '/' + wannafile)
-        os.rmdir(os.getcwd() + '/downloads/' + wannakeywords)
-        j += 1
-
-        if j == 1:
-            break
+        
+    os.rmdir(os.getcwd() + '/downloads/' + wannakeywords)
+    
     
 @bot.event
 async def on_message(message):
